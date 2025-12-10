@@ -1,0 +1,21 @@
+replicaCount: 1
+image:
+  repository: premium-todo
+  pullPolicy: IfNotPresent
+  tag: "v0.1.0"
+
+service:
+  type: ClusterIP
+  port: 5000
+  targetPort: 5000
+  name: http
+  selector:
+    app: premium-todo
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "100m"
+  limits:
+    memory: "128Mi"
+    cpu: "200m"

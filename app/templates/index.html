@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="grid">
+    {% for todo in todos %}
+    <article class="card {% if todo.done %}done{% endif %}">
+        <div class="card-head">
+            <h3 class="title">{{ todo.title }}</h3>
+            <div class="actions">
+                <a href="{{ url_for('toggle_todo', todo_id=todo.id) }}" class="small">{% if todo.done %}Undo{% else
+                    %}Done{% endif %}</a>
+                <a href="{{ url_for('edit_todo', todo_id=todo.id) }}" class="small">Edit</a>
+                <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="post" style="display:inline">
+                    <button class="small link" type="submit"
+                        onclick="return confirm('Delete this todo?')">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% if todo.description %}
+        <p class="desc">{{ todo.description }}</p>
+        {% endif %}
+        <div class="meta">Created {{ todo.created_at.strftime('%b %d, %Y %H:%M') }}</div>
+    </article>
+    {% else %}
+    <p class="empty">No todos yet — click <strong>+ Add</strong> to create one.</p>
+    {% endfor %}
+</section>
+{% endblock %}

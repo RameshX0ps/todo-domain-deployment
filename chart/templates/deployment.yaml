@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name premium-todo
+  labels:
+    app: *name
+    version: "v0.1.0"
+    chart: todo-domain-deployment-0.1.0
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      containers:
+        - name: *name
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.targetPort }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: premium-todo
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: premium-todo
+                  key: password
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: premium-todo
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: premium-todo
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: premium-todo
+                  key: DB_NAME
+            - name: FLASK_ENV
+              value: superkey
