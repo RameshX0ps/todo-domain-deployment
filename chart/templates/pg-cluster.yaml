@@ -10,19 +10,5 @@ spec:
       owner: todouser
       secret:
         name: premium-todo
-
-      # postInitSQL:
-      #   - CREATE USER todoUser WITH PASSWORD '$APP_PASSWORD';
-      #   - GRANT ALL PRIVILEGES ON DATABASE todo TO todouser;
-
-      # postInitApplicationSQL:
-      #   - \connect todo 
-      #   - CREATE SCHEMA IF NOT EXISTS public;
-  # env:
-  #   - name: APP_PASSWORD
-  #     valueFrom:
-  #       secretKeyRef:
-  #         name: premium-todo
-  #         key: password
   storage:
     size: 1Gi
